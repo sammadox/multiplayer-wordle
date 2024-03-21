@@ -1,0 +1,75 @@
+/* Game
+.game-contaier{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-width: 600px;
+  width: 100%;
+} */
+
+/* Word grid */
+.word-grid-container{
+  display: flex;
+}
+
+.word-grid{
+  display: flex;
+  flex-direction: column;
+  border: 1px solid grey;
+}
+
+.word-row{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.word-letter{
+  height: 50px;
+  width: 50px;
+  border-radius: 5px;
+  border: 1px solid hsla(0, 0%, 74%, 0.71);
+  margin: 3px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.word-letter-correct-place{
+  background-color: hsl(120, 83%, 70%);
+}
+
+.word-letter-wrong-place{
+  background-color: hsl(63, 83%, 70%);
+}
+
+.word-letter-not-present{
+  background-color: hsl(0, 0%, 50%);
+}
+
+/* Keyboard */
+.keyboard-container{
+  display: flex;
+}
+
+.keyboard-grid{
+  display: flex;
+  flex-direction: column;
+  border: 1px solid grey;
+}
+
+.keyboard-row{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 2px 2px;
+}
+
+.keyboard-row button{
+  padding: 10px 10px;
+  display: flex;
+  justify-content: center;
+  margin: 2px;
+  flex-grow: 1;
+  /* flex: 1 1; */
+}
