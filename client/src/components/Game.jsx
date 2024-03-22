@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import WordGuess from "./WordGuess";
 import Keyboard from "./Keyboard";
 import { socket } from "../socket";
+import Modal from "./Modal";
+import Delayed from "./Delayed";
 
 function Game({room, isPlayerTurn, setIsPlayerTurn, setCurrentPlayer, opponent, username}) {
 
@@ -13,6 +15,8 @@ function Game({room, isPlayerTurn, setIsPlayerTurn, setCurrentPlayer, opponent, 
     const [guessedExactLetters, setGuessedExactLetters] = useState([]);
     const [guessedNotExactLetters, setGuessedNotExactLetters] = useState([]);
     const [guessedWrongLetters, setGuessedWrongLetters] = useState([]);
+    const [isGameOver, setIsGameOver] = useState(false);
+    const [isWinner, setIsWinner] = useState(false);
 
     useEffect(() => {
 
@@ -29,14 +33,21 @@ function Game({room, isPlayerTurn, setIsPlayerTurn, setCurrentPlayer, opponent, 
             handleEnterClick(true);
         }
 
+        const handleGameOverFromServer = ({ winner }) => {
+            setIsGameOver(true);
+            setIsWinner(false);
+        }
+
         socket.on("letter_input", handleLetterInputFromServer);
         socket.on("delete_input", handleDeleteFromServer);
         socket.on("submit_input", handleSubmitFromServer);
+        socket.on("game_over", handleGameOverFromServer);
 
         return () => {
             socket.off("letter_input", handleLetterInputFromServer);
             socket.off("delete_input", handleDeleteFromServer);
             socket.off("submit_input", handleSubmitFromServer);
+            socket.off("game_over", handleGameOverFromServer);
         }
 
     }, [currentWord]);
@@ -70,6 +81,9 @@ function Game({room, isPlayerTurn, setIsPlayerTurn, setCurrentPlayer, opponent, 
         });
         setGuessList(prevGuestList => [...prevGuestList, currentWord]);
         setCurrentRow(prevCurrentRow => prevCurrentRow + 1);
+        if (currentWord === word && !isFromServer) {
+            handleGameOver();
+        }
         setCurrentWord("");
 
         if (!isFromServer) {
@@ -77,7 +91,7 @@ function Game({room, isPlayerTurn, setIsPlayerTurn, setCurrentPlayer, opponent, 
             setCurrentPlayer(opponent);
         } else {
             setIsPlayerTurn(true);
-            setCurrentPlayer(username)
+            setCurrentPlayer(username);
         }
     }
 
@@ -146,10 +160,10 @@ function Game({room, isPlayerTurn, setIsPlayerTurn, setCurrentPlayer, opponent, 
         socket.emit("submit_input", { room } )
     }
 
-    const gameStatus = () => {
-        if (currentRow === 7) {
-            return "over";
-        }
+    const handleGameOver = () => {
+        socket.emit("game_over", { winner: username, room })
+        setIsGameOver(true);
+        setIsWinner(true);
     }
 
     return (
@@ -160,6 +174,7 @@ function Game({room, isPlayerTurn, setIsPlayerTurn, setCurrentPlayer, opponent, 
                     handleDeleteClick={handleDeleteClick} handleEnterClick={handleEnterClick}
                     getBackgroundColorClassName={getBackgroundColorClassName}
             />
+            { isGameOver ? <Delayed delay={1000}><Modal isWinner={isWinner}/></Delayed> : <></>}
         </div>
     )
 }

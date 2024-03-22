@@ -16,8 +16,15 @@ const submitReceiveHandler = (socket) => {
     });
 }
 
+const gameOverHandler = (socket) => {
+    socket.on("game_over", ({ winner, room }) => {
+        socket.broadcast.to(room).emit("game_over", { winner });
+    });
+}
+
 module.exports = {
     letterReceiveHandler,
     deleteReceiveHandler,
-    submitReceiveHandler
+    submitReceiveHandler,
+    gameOverHandler
 }

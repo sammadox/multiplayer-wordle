@@ -6,7 +6,8 @@ const socketIo = require('socket.io');
 const {
     letterReceiveHandler,
     deleteReceiveHandler,
-    submitReceiveHandler
+    submitReceiveHandler,
+    gameOverHandler
 } = require('./events/gameEvents');
 
 const {
@@ -50,6 +51,8 @@ io.on("connection", (socket) => {
     deleteReceiveHandler(socket);
     // On receiving a submit from game
     submitReceiveHandler(socket);
+    // On game over
+    gameOverHandler(socket);
 
     //On disconnecting
     userDisconnectedHandler(socket);
