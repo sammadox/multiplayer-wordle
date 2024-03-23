@@ -15,15 +15,22 @@ const emitToAllInRoom = (io, room, event, args) => {
 
 const roomJoinHandler = (socket, io) => {
   socket.on("join_room", ({ username, room }) => {
-    socket.join(room);
-    addUser(socket.id, username, room);
-    const users = getRoomUserList(room);
-    console.log("users", users);
+    let users = getRoomUserList(room);
+    console.log("users size", users.length);
     if (users.length === 2) {
-        broadcastToOthersInRoom(socket, room, username);
-        emitToSelf(socket, users[0].username);
-        emitToAllInRoom(io, room, "first_player", { user: users[Math.floor(Math.random()*2)] });
-        emitToAllInRoom(io, room, "room_word", { word: getRandomWord()});
+        console.log("Here");
+        socket.emit("room_full");
+    } else {
+        socket.join(room);
+        addUser(socket.id, username, room);
+        users = getRoomUserList(room);
+        console.log("users", users);
+        if (users.length === 2) {
+            broadcastToOthersInRoom(socket, room, username);
+            emitToSelf(socket, users[0].username);
+            emitToAllInRoom(io, room, "first_player", { user: users[Math.floor(Math.random()*2)] });
+            emitToAllInRoom(io, room, "room_word", { word: getRandomWord()});
+        }
     }
   });
 };

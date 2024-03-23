@@ -33,9 +33,6 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use('/', require('./routes/wordsRoute'));
 
-let activeUsers = [];
-let roomId = "";
-
 
 io.on("connection", (socket) => {
     console.log("user joined");

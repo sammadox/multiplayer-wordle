@@ -3,11 +3,16 @@ import Game from "../components/Game";
 import WaitForOpponent from "../components/WaitForOpponent";
 import { socket } from "../socket";
 import GameDetails from "../components/GameDetails";
+import { toast } from 'react-toastify';
 
-function GameRoom({ username, opponent, room, setOpponent, word, setWord }) {
+function GameRoom({ username, opponent, room, setOpponent, word, setWord, setRoom }) {
 
     const [currentPlayer, setCurrentPlayer] = useState();
     const [isPlayerTurn, setIsPlayerTurn] = useState(false);
+
+    const toastOptions = {
+        position: "bottom-center"
+    };
 
     const toggleCurrentPlayer = () => {
         if (currentPlayer === username) {
@@ -44,10 +49,18 @@ function GameRoom({ username, opponent, room, setOpponent, word, setWord }) {
 
         socket.on("room_word", handleGameWord);
 
+        const handleRoomFull = () => {
+            toast.error("Room full! Try another or create one!", toastOptions);
+            setRoom("");
+        }
+
+        socket.on('room_full', handleRoomFull);
+
         return () => {
             socket.off("new_opponent", handleNewOpponent);
             socket.off("first_player", handleCurrentPlayer);
             socket.off("room_word", handleGameWord);
+            socket.off('room_full', handleRoomFull);
         }
     }, []);
 

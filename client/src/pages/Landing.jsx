@@ -45,7 +45,7 @@ function Landing({ username, setUsername, room, setRoom }) {
         <div className="main-landing">
             <div className="landing-container">
                 <p>Wordle Battle</p>
-                <input type="text" placeholder="Enter your name" onChange={handleUserInputChange} />
+                <input type="text" placeholder="Enter your name" onChange={handleUserInputChange} value={username}/>
                 <button id="create-btn" disabled={!username || (username && joiningRoom)} onClick={handleCreateRoom}>Create Room</button>
                 <input type="text" placeholder="Enter room to join" onChange={handleRoomInputChange} />
                 <button disabled={!username || !joiningRoom} onClick={handleJoinRoom}>Join Room</button>

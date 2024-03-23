@@ -2,6 +2,8 @@ import { useEffect, useState } from "react"
 import Landing from "./pages/Landing"
 import GameRoom from "./pages/GameRoom"
 import { socket } from "./socket";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
 
@@ -78,12 +80,13 @@ function App() {
         (username && room)
         ? <GameRoom username={username} opponent={opponent} 
                   room={room} setOpponent={setOpponent} 
-                  word={word} setWord={setWord}
+                  word={word} setWord={setWord} setRoom={setRoom}
           /> 
         : <Landing username={username} setUsername={setUsername}
                  room={room} setRoom={setRoom}
           />
       }
+      <ToastContainer />
     </>
   )
 }

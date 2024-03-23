@@ -233,3 +233,8 @@ body {
   40% {transform: translateY(-0.5rem);} 
   60% {transform: translateY(-0.25rem);} 
 }
+
+.Toastify__toast-container {
+  height: 100px;
+  width: 350px;
+}
