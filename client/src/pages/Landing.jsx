@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { socket } from "../socket";
+import Footer from "../components/Footer";
 
 const getRoomName = () => {
     const generatorString = "abcdefghijklmnopqrstuvwxyz";
-    let roomName= "";
+    let roomName = "";
     for (let i = 0; i < 6; i++) {
         let randomIndex = Math.floor(Math.random() * generatorString.length);
         roomName += generatorString.charAt(randomIndex);
@@ -11,7 +12,7 @@ const getRoomName = () => {
     return roomName;
 }
 
-function Landing({username, setUsername, room, setRoom}) {
+function Landing({ username, setUsername, room, setRoom }) {
 
     const [joiningRoom, setJoiningRoom] = useState('');
 
@@ -41,11 +42,15 @@ function Landing({username, setUsername, room, setRoom}) {
     }
 
     return (
-        <div>
-            <input type="text" placeholder="Enter your name" onChange={handleUserInputChange}/>
-            <button disabled={!username} onClick={handleCreateRoom}>Create Room</button>
-            <input type="text" placeholder="Enter room to join" onChange={handleRoomInputChange}/>
-            <button disabled={!username || !joiningRoom} onClick={handleJoinRoom}>Join Room</button>
+        <div className="main-landing">
+            <div className="landing-container">
+                <p>Wordle Battle</p>
+                <input type="text" placeholder="Enter your name" onChange={handleUserInputChange} />
+                <button id="create-btn" disabled={!username || (username && joiningRoom)} onClick={handleCreateRoom}>Create Room</button>
+                <input type="text" placeholder="Enter room to join" onChange={handleRoomInputChange} />
+                <button disabled={!username || !joiningRoom} onClick={handleJoinRoom}>Join Room</button>
+            </div>
+            <Footer />
         </div>
     );
 }

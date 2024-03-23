@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Game from "../components/Game";
 import WaitForOpponent from "../components/WaitForOpponent";
 import { socket } from "../socket";
+import GameDetails from "../components/GameDetails";
 
 function GameRoom({ username, opponent, room, setOpponent, word, setWord }) {
 
@@ -51,12 +52,11 @@ function GameRoom({ username, opponent, room, setOpponent, word, setWord }) {
     }, []);
 
     return (
-        <div>
-            <h1>Game!!!</h1>
-            <h5>Room: {room}</h5>
-            <h5>user: {username}</h5>
-            <h5>opponent: {opponent}</h5>
-            <h5>turn: {currentPlayer}</h5>
+        <div className="game-room">
+            <GameDetails 
+                room={room} username={username}
+                opponent={opponent} currentPlayer={currentPlayer}
+            />
             {opponent ? <Game room={room} 
                 isPlayerTurn={isPlayerTurn} 
                 setIsPlayerTurn={setIsPlayerTurn} 
