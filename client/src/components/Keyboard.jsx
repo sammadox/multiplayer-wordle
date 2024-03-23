@@ -20,25 +20,25 @@ function Keyboard({handleKeyUp, handleLetterClick, handleDeleteClick, handleEnte
                 <div className="keyboard-row">
                     {
                         keyRow1.map((key) => {
-                            return <button className={getBackgroundColorClassName(key)} key={`btn-${key}`} onClick={() => handleLetterClick(key, false)}>{key}</button>
+                            return <button className={getBackgroundColorClassName(key)} key={`btn-${key}`} onClick={() => handleLetterClick(key)}>{key}</button>
                         })
                     }
                 </div>
                 <div className="keyboard-row">
                     {
                         keyRow2.map((key) => {
-                            return <button className={getBackgroundColorClassName(key)} key={`btn-${key}`} onClick={() => handleLetterClick(key, false)}>{key}</button>
+                            return <button className={getBackgroundColorClassName(key)} key={`btn-${key}`} onClick={() => handleLetterClick(key)}>{key}</button>
                         })
                     }
                 </div>
                 <div className="keyboard-row">
-                    <button onClick={() => handleDeleteClick(false)}>Delete</button>
+                    <button onClick={handleDeleteClick}>Delete</button>
                     {
                         keyRow3.map((key) => {
-                            return <button className={getBackgroundColorClassName(key)} key={`btn-${key}`} onClick={() => handleLetterClick(key, false)}>{key}</button>
+                            return <button className={getBackgroundColorClassName(key)} key={`btn-${key}`} onClick={() => handleLetterClick(key)}>{key}</button>
                         })
                     }
-                    <button onClick={() => handleEnterClick(false)}>Enter</button>
+                    <button onClick={handleEnterClick}>Enter</button>
                 </div>
             </div>
         </div>

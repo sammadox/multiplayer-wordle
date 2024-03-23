@@ -12,49 +12,6 @@ function App() {
   const [opponent, setOpponent] = useState("");
   const [isConnected, setIsConnected] = useState(socket.connected);
   const [word, setWord] = useState("");
-  // const handleSubmit =
-
-  // Connect to the server
-  // useEffect(() => {
-  //   const socket = io.connect("http://localhost:3000");
-  //   console.log("socket", socket.connected, socket);
-
-  //   // join room
-  //   socket.emit("join_room", { username, room });
-
-  //   // get opponents
-  //   // const handleOpponentJoin = ({ users }) => {
-  //   //   const opponentUsers = users.filter(user => user.username !== username);
-  //   //   setOpponent(opponentUsers[0]);
-  //   // }
-
-  //   // socket.on("room_users", handleOpponentJoin);
-  //   const handleNewMessage = ({msg}) => {
-  //     setOpponent(msg);
-  //   }
-
-  //   socket.on("new_message", handleNewMessage);
-
-  //   return () => {
-  //     // socket.off("room_users", handleOpponentJoin);
-  //     socket.off("new_message", handleNewMessage);
-  //     socket.disconnect();
-  //   }
-  // }, []);
-
-  // get opponent
-  // useEffect(() => {
-    
-
-  //   // socket.on("send_msg", ({message}) => {
-  //   //   console.log("Hello! ", message);
-  //   // })
-
-  //   return () => {
-  //     socket.off("room_users", handleOpponentJoin)
-  //   }
-  // }, [opponent]);
-
 
   useEffect(() => {
     function onConnect() {

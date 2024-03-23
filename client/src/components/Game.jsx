@@ -16,7 +16,7 @@ function Game({room, isPlayerTurn, setIsPlayerTurn, setCurrentPlayer, opponent, 
     const [isGameOver, setIsGameOver] = useState(false);
     const [isWinner, setIsWinner] = useState(false);
     const [winner, setWinner] = useState("");
-    console.log("The word is: ", word);
+    // console.log("The word is: ", word);
 
     useEffect(() => {
 
@@ -35,7 +35,7 @@ function Game({room, isPlayerTurn, setIsPlayerTurn, setCurrentPlayer, opponent, 
         const handleSubmitFromServer = ({isValidWord}) => {
             if (isValidWord && currentWord.length === 5) {
                 submitGuess();
-                console.log(`Word submitted: ${currentWord}`);
+                // console.log(`Word submitted: ${currentWord}`);
                 toggleCurrentPlayer();
                 setIsPlayerTurn(!isPlayerTurn);
             }
@@ -104,19 +104,19 @@ function Game({room, isPlayerTurn, setIsPlayerTurn, setCurrentPlayer, opponent, 
 
     const handleLetterClick = (key) => {
         if (!isPlayerTurn) return;
-        console.log("In Letter", isPlayerTurn, key, currentWord);
+        // console.log("In Letter", isPlayerTurn, key, currentWord);
         socket.emit("letter_input", { letter: key, room } )
     }
 
     const handleDeleteClick = () => {
         if (!isPlayerTurn) return;
-        console.log("In Delete", isPlayerTurn, currentWord);
+        // console.log("In Delete", isPlayerTurn, currentWord);
         socket.emit("delete_input", { room } );
     }
 
     const handleEnterClick = () => {
         if (!isPlayerTurn) return;
-        console.log('Here', currentWord, currentWord.length, isPlayerTurn);
+        // console.log('Here', currentWord, currentWord.length, isPlayerTurn);
         socket.emit("submit_input", { room, currentWord } )
     }
 
