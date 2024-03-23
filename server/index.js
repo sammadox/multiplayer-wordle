@@ -2,6 +2,7 @@ const express = require('express');
 const http = require('http');
 const cors = require('cors');
 const socketIo = require('socket.io');
+require('dotenv').config();
 
 const {
     letterReceiveHandler,
@@ -17,11 +18,13 @@ const {
 
 const app = express();
 const server = http.createServer(app);
-const io = socketIo(server, {
+
+const corsOptions = process.env.MODE === 'DEV' ? {
     cors: {
         origin: "*"
     }
-});
+} : {};
+const io = socketIo(server, corsOptions);
 
 const PORT = process.env.PORT || 3000;
 

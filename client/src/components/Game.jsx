@@ -42,7 +42,7 @@ function Game({room, isPlayerTurn, setIsPlayerTurn, setCurrentPlayer, opponent, 
         }
 
         const handleGameOverFromServer = ({ winner }) => {
-            console.log("Game over", winner);
+            // console.log("Game over", winner);
             setIsGameOver(true);
             setWinner(winner);
             setIsWinner(winner === username);
@@ -128,10 +128,10 @@ function Game({room, isPlayerTurn, setIsPlayerTurn, setCurrentPlayer, opponent, 
             // console.log("here", e.key.toUpperCase());
             handleLetterClick(e.key.toUpperCase(), false);
         } else if (e.key === 'Backspace') {
-            console.log("delete");
+            // console.log("delete");
             handleDeleteClick(false);
         } else if (e.key == 'Enter') {
-            console.log("Enter", e);
+            // console.log("Enter", e);
             handleEnterClick(false);
         }
     }
