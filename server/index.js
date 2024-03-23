@@ -23,7 +23,13 @@ const corsOptions = process.env.MODE === 'DEV' ? {
     cors: {
         origin: "*"
     }
-} : {};
+} : {
+    cors: {
+        origin: process.env.CLIENT_URL,
+        methods: ["POST", "GET"],
+        credentials: true
+    }
+};
 const io = socketIo(server, corsOptions);
 
 const PORT = process.env.PORT || 3000;
