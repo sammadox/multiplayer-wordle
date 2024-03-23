@@ -1,7 +1,7 @@
 function WordGuess({ word, guessList, currentRow, currentWord }) {
     const placeholderArray = ['', '', '', '', ''];
     const renderCurrentWord = currentWord.padEnd(5," ");
-    const renderList = [...guessList, renderCurrentWord, ...new Array(5-guessList.length-1).fill("      ")];
+    const renderList = guessList.length === 5 ? guessList : [...guessList, renderCurrentWord, ...new Array(5-guessList.length-1).fill("      ")];
     return (
         <div className="word-grid-container">
             <div className="word-grid">

@@ -1,4 +1,5 @@
 const { addUser, getRoomUserList, removeUser } = require("../utils/users");
+const { getRandomWord } = require('../utils/words');
 
 const broadcastToOthersInRoom = (socket, room, username) => {
     socket.broadcast.to(room).emit("new_opponent", { username: username });
@@ -8,8 +9,8 @@ const emitToSelf = (socket, username) => {
     socket.emit("new_opponent", { username });
 }
 
-const emitToAllInRoom = (io, room, user) => {
-    io.to(room).emit("first_player", { user });
+const emitToAllInRoom = (io, room, event, args) => {
+    io.to(room).emit(event, args);
 }
 
 const roomJoinHandler = (socket, io) => {
@@ -21,7 +22,8 @@ const roomJoinHandler = (socket, io) => {
     if (users.length === 2) {
         broadcastToOthersInRoom(socket, room, username);
         emitToSelf(socket, users[0].username);
-        emitToAllInRoom(io, room, users[Math.floor(Math.random()*2)]);
+        emitToAllInRoom(io, room, "first_player", { user: users[Math.floor(Math.random()*2)] });
+        emitToAllInRoom(io, room, "room_word", { word: getRandomWord()});
     }
   });
 };

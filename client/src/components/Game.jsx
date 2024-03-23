@@ -5,9 +5,7 @@ import { socket } from "../socket";
 import Modal from "./Modal";
 import Delayed from "./Delayed";
 
-function Game({room, isPlayerTurn, setIsPlayerTurn, setCurrentPlayer, opponent, username}) {
-
-    const word = "SPEAK";
+function Game({room, isPlayerTurn, setIsPlayerTurn, setCurrentPlayer, opponent, username, word}) {
 
     const [currentWord, setCurrentWord] = useState("");
     const [currentRow, setCurrentRow] = useState(0);
@@ -17,6 +15,8 @@ function Game({room, isPlayerTurn, setIsPlayerTurn, setCurrentPlayer, opponent, 
     const [guessedWrongLetters, setGuessedWrongLetters] = useState([]);
     const [isGameOver, setIsGameOver] = useState(false);
     const [isWinner, setIsWinner] = useState(false);
+    const [winner, setWinner] = useState("");
+    console.log("The word is: ", word);
 
     useEffect(() => {
 
@@ -36,6 +36,7 @@ function Game({room, isPlayerTurn, setIsPlayerTurn, setCurrentPlayer, opponent, 
         const handleGameOverFromServer = ({ winner }) => {
             setIsGameOver(true);
             setIsWinner(false);
+            setWinner(winner);
         }
 
         socket.on("letter_input", handleLetterInputFromServer);
@@ -79,11 +80,13 @@ function Game({room, isPlayerTurn, setIsPlayerTurn, setCurrentPlayer, opponent, 
                 }
             }
         });
+        if (currentWord === word && !isFromServer) {
+            handleGameOver(true);
+        } else if (currentRow === 4) {
+            handleGameOver(false);
+        }
         setGuessList(prevGuestList => [...prevGuestList, currentWord]);
         setCurrentRow(prevCurrentRow => prevCurrentRow + 1);
-        if (currentWord === word && !isFromServer) {
-            handleGameOver();
-        }
         setCurrentWord("");
 
         if (!isFromServer) {
@@ -160,10 +163,14 @@ function Game({room, isPlayerTurn, setIsPlayerTurn, setCurrentPlayer, opponent, 
         socket.emit("submit_input", { room } )
     }
 
-    const handleGameOver = () => {
-        socket.emit("game_over", { winner: username, room })
+    const handleGameOver = (withWinner) => {
+        if (withWinner) {
+            setIsWinner(true);
+            socket.emit("game_over", { winner: username, room });
+        } else {
+            socket.emit("game_over", { winner: "none", room });
+        }
         setIsGameOver(true);
-        setIsWinner(true);
     }
 
     return (
@@ -174,7 +181,7 @@ function Game({room, isPlayerTurn, setIsPlayerTurn, setCurrentPlayer, opponent, 
                     handleDeleteClick={handleDeleteClick} handleEnterClick={handleEnterClick}
                     getBackgroundColorClassName={getBackgroundColorClassName}
             />
-            { isGameOver ? <Delayed delay={1000}><Modal isWinner={isWinner}/></Delayed> : <></>}
+            { isGameOver ? <Delayed delay={1000}><Modal isWinner={isWinner} winner={winner}/></Delayed> : <></>}
         </div>
     )
 }

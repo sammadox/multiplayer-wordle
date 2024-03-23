@@ -3,7 +3,7 @@ import Game from "../components/Game";
 import WaitForOpponent from "../components/WaitForOpponent";
 import { socket } from "../socket";
 
-function GameRoom({ username, opponent, room, setOpponent }) {
+function GameRoom({ username, opponent, room, setOpponent, word, setWord }) {
 
     const [currentPlayer, setCurrentPlayer] = useState();
     const [isPlayerTurn, setIsPlayerTurn] = useState(false);
@@ -33,9 +33,16 @@ function GameRoom({ username, opponent, room, setOpponent }) {
 
         socket.on("first_player", handleCurrentPlayer);
 
+        const handleGameWord = ({ word }) => {
+            setWord(word);
+        }
+
+        socket.on("room_word", handleGameWord);
+
         return () => {
             socket.off("new_opponent", handleNewOpponent);
             socket.off("first_player", handleCurrentPlayer);
+            socket.off("room_word", handleGameWord);
         }
     }, []);
 
@@ -46,7 +53,7 @@ function GameRoom({ username, opponent, room, setOpponent }) {
             <h5>user: {username}</h5>
             <h5>opponent: {opponent}</h5>
             <h5>turn: {currentPlayer}</h5>
-            {opponent ? <Game room={room} isPlayerTurn={isPlayerTurn} setIsPlayerTurn={setIsPlayerTurn} setCurrentPlayer={setCurrentPlayer} opponent={opponent} username={username}/> : <WaitForOpponent />}
+            {opponent ? <Game room={room} isPlayerTurn={isPlayerTurn} setIsPlayerTurn={setIsPlayerTurn} setCurrentPlayer={setCurrentPlayer} opponent={opponent} username={username} word={word}/> : <WaitForOpponent />}
         </div>
     )
 }

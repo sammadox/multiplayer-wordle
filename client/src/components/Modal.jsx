@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-function Modal({isWinner}) {
+function Modal({isWinner, winner}) {
     useEffect(() => {
         const timer = setTimeout(() => {}, 2000);
 
@@ -9,7 +9,7 @@ function Modal({isWinner}) {
     return (
         <div className="modal-overlay">
             <div className="modal-container">
-                <h1>You {isWinner ? "won!" : "Lost!"}</h1>
+                <h1>You { winner !== "none" ? isWinner ? "won!" : "lost!" : "draw!"}</h1>
             </div>
         </div>
     );

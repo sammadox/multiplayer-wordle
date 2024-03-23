@@ -9,7 +9,7 @@ function App() {
   const [username, setUsername] = useState("");
   const [opponent, setOpponent] = useState("");
   const [isConnected, setIsConnected] = useState(socket.connected);
-
+  const [word, setWord] = useState("");
   // const handleSubmit =
 
   // Connect to the server
@@ -75,7 +75,14 @@ function App() {
   return (
     <>
       {
-        (username && room) ? <GameRoom username={username} opponent={opponent} room={room} setOpponent={setOpponent}/> : <Landing username={username} setUsername={setUsername} room={room} setRoom={setRoom} />
+        (username && room)
+        ? <GameRoom username={username} opponent={opponent} 
+                  room={room} setOpponent={setOpponent} 
+                  word={word} setWord={setWord}
+          /> 
+        : <Landing username={username} setUsername={setUsername}
+                 room={room} setRoom={setRoom}
+          />
       }
     </>
   )
