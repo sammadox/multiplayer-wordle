@@ -44,13 +44,13 @@ io.on("connection", (socket) => {
     roomJoinHandler(socket, io);
 
     // On receiving a letter from game
-    letterReceiveHandler(socket);
+    letterReceiveHandler(io, socket);
     // On receiving a delete from game
-    deleteReceiveHandler(socket);
+    deleteReceiveHandler(io, socket);
     // On receiving a submit from game
-    submitReceiveHandler(socket);
+    submitReceiveHandler(io, socket);
     // On game over
-    gameOverHandler(socket);
+    gameOverHandler(io, socket);
 
     //On disconnecting
     userDisconnectedHandler(socket);

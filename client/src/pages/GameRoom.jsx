@@ -8,8 +8,12 @@ function GameRoom({ username, opponent, room, setOpponent, word, setWord }) {
     const [currentPlayer, setCurrentPlayer] = useState();
     const [isPlayerTurn, setIsPlayerTurn] = useState(false);
 
-    const togglePlayerTurn = () => {
-        setIsPlayerTurn(prevIsPlayerTurn => !prevIsPlayerTurn);
+    const toggleCurrentPlayer = () => {
+        if (currentPlayer === username) {
+            setCurrentPlayer(opponent);
+        } else {
+            setCurrentPlayer(username);
+        }
     }
 
     useEffect(() => {
@@ -53,7 +57,14 @@ function GameRoom({ username, opponent, room, setOpponent, word, setWord }) {
             <h5>user: {username}</h5>
             <h5>opponent: {opponent}</h5>
             <h5>turn: {currentPlayer}</h5>
-            {opponent ? <Game room={room} isPlayerTurn={isPlayerTurn} setIsPlayerTurn={setIsPlayerTurn} setCurrentPlayer={setCurrentPlayer} opponent={opponent} username={username} word={word}/> : <WaitForOpponent />}
+            {opponent ? <Game room={room} 
+                isPlayerTurn={isPlayerTurn} 
+                setIsPlayerTurn={setIsPlayerTurn} 
+                setCurrentPlayer={setCurrentPlayer}
+                opponent={opponent} username={username} 
+                word={word} toggleCurrentPlayer={toggleCurrentPlayer}
+                /> 
+                : <WaitForOpponent />}
         </div>
     )
 }

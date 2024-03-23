@@ -1,24 +1,26 @@
-const letterReceiveHandler = (socket) => {
+const {isValidWord} = require('../utils/words');
+
+const letterReceiveHandler = (io, socket) => {
     socket.on("letter_input", ({ letter, room }) => {
-        socket.broadcast.to(room).emit("letter_input", { letter, room });
+        io.to(room).emit("letter_input", { letter, room });
     });
 }
 
-const deleteReceiveHandler = (socket) => {
+const deleteReceiveHandler = (io, socket) => {
     socket.on("delete_input", ({ room }) => {
-        socket.broadcast.to(room).emit("delete_input");
+        io.to(room).emit("delete_input");
     });
 }
 
-const submitReceiveHandler = (socket) => {
-    socket.on("submit_input", ({ room }) => {
-        socket.broadcast.to(room).emit("submit_input");
+const submitReceiveHandler = (io, socket) => {
+    socket.on("submit_input", ({ room, currentWord }) => {
+        io.to(room).emit("submit_input", { isValidWord: isValidWord(currentWord) });
     });
 }
 
-const gameOverHandler = (socket) => {
+const gameOverHandler = (io, socket) => {
     socket.on("game_over", ({ winner, room }) => {
-        socket.broadcast.to(room).emit("game_over", { winner });
+        io.to(room).emit("game_over", { winner });
     });
 }
 

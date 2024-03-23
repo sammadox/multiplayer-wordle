@@ -5,7 +5,7 @@ import { socket } from "../socket";
 import Modal from "./Modal";
 import Delayed from "./Delayed";
 
-function Game({room, isPlayerTurn, setIsPlayerTurn, setCurrentPlayer, opponent, username, word}) {
+function Game({room, isPlayerTurn, setIsPlayerTurn, setCurrentPlayer, opponent, username, word, toggleCurrentPlayer}) {
 
     const [currentWord, setCurrentWord] = useState("");
     const [currentRow, setCurrentRow] = useState(0);
@@ -21,22 +21,31 @@ function Game({room, isPlayerTurn, setIsPlayerTurn, setCurrentPlayer, opponent, 
     useEffect(() => {
 
         const handleLetterInputFromServer = ({ letter }) => {
-            handleLetterClick(letter, true);
+            if (currentWord.length < 5) {
+                setCurrentWord(prevCurrentWord => prevCurrentWord + letter);
+            }
         }
 
         const handleDeleteFromServer = () => {
-            console.log("Delete from server");
-            handleDeleteClick(true);
+            if (currentWord.length > 0) {
+                setCurrentWord(prevCurrentWord => prevCurrentWord.slice(0,-1));
+            }
         }
 
-        const handleSubmitFromServer = () => {
-            handleEnterClick(true);
+        const handleSubmitFromServer = ({isValidWord}) => {
+            if (isValidWord && currentWord.length === 5) {
+                submitGuess();
+                console.log(`Word submitted: ${currentWord}`);
+                toggleCurrentPlayer();
+                setIsPlayerTurn(!isPlayerTurn);
+            }
         }
 
         const handleGameOverFromServer = ({ winner }) => {
+            console.log("Game over", winner);
             setIsGameOver(true);
-            setIsWinner(false);
             setWinner(winner);
+            setIsWinner(winner === username);
         }
 
         socket.on("letter_input", handleLetterInputFromServer);
@@ -64,7 +73,7 @@ function Game({room, isPlayerTurn, setIsPlayerTurn, setCurrentPlayer, opponent, 
         return "";
     }
 
-    const submitGuess = (isFromServer) => {
+    const submitGuess = () => {
         currentWord.split('').map((letter, index) => {
             if (word[index] === letter) {
                 if (!guessedExactLetters.includes(letter)) {
@@ -80,59 +89,35 @@ function Game({room, isPlayerTurn, setIsPlayerTurn, setCurrentPlayer, opponent, 
                 }
             }
         });
-        if (currentWord === word && !isFromServer) {
-            handleGameOver(true);
-        } else if (currentRow === 4) {
-            handleGameOver(false);
+
+        if (isPlayerTurn) {
+            if (currentWord === word) {
+                handleGameOver(username);
+            } else if (currentRow === 4) {
+                handleGameOver("none");
+            }
         }
         setGuessList(prevGuestList => [...prevGuestList, currentWord]);
         setCurrentRow(prevCurrentRow => prevCurrentRow + 1);
         setCurrentWord("");
-
-        if (!isFromServer) {
-            setIsPlayerTurn(false);
-            setCurrentPlayer(opponent);
-        } else {
-            setIsPlayerTurn(true);
-            setCurrentPlayer(username);
-        }
     }
 
-    const handleLetterClick = (key, isFromServer) => {
-        console.log("In Letter", isPlayerTurn, isFromServer, key, currentWord);
-        if (!isPlayerTurn && !isFromServer) return;
-        if (currentWord.length < 5) {
-            setCurrentWord(prevCurrentWord => prevCurrentWord + key);
-        }
-        if (!isFromServer) {
-            sendLetterToServer(key);
-        }
-        // console.log(`${key} pressed!`)
+    const handleLetterClick = (key) => {
+        if (!isPlayerTurn) return;
+        console.log("In Letter", isPlayerTurn, key, currentWord);
+        socket.emit("letter_input", { letter: key, room } )
     }
 
-    const handleDeleteClick = (isFromServer) => {
-        console.log("In Delete", isPlayerTurn, isFromServer, currentWord);
-        // false true
-        if (!isPlayerTurn && !isFromServer) return;
-        if (currentWord.length > 0) {
-            setCurrentWord(prevCurrentWord => prevCurrentWord.slice(0,-1));
-        }
-        if (!isFromServer) {
-            sendDeleteToServer();
-        }
-        // console.log(`Delete pressed!`)
+    const handleDeleteClick = () => {
+        if (!isPlayerTurn) return;
+        console.log("In Delete", isPlayerTurn, currentWord);
+        socket.emit("delete_input", { room } );
     }
 
-    const handleEnterClick = (isFromServer) => {
-        console.log('Here', currentWord, currentWord.length, isPlayerTurn, isFromServer);
-        if (!isPlayerTurn && !isFromServer) return;
-        if (currentWord.length === 5) {
-            console.log(`Word submitted: ${currentWord}`);
-            submitGuess(isFromServer);
-        }
-        if (!isFromServer) {
-            sendSubmitToServer();
-        }
+    const handleEnterClick = () => {
+        if (!isPlayerTurn) return;
+        console.log('Here', currentWord, currentWord.length, isPlayerTurn);
+        socket.emit("submit_input", { room, currentWord } )
     }
 
     const handleKeyUp = (e) => {
@@ -151,26 +136,8 @@ function Game({room, isPlayerTurn, setIsPlayerTurn, setCurrentPlayer, opponent, 
         }
     }
 
-    const sendLetterToServer = (letter) => {
-        socket.emit("letter_input", { letter, room } )
-    }
-
-    const sendDeleteToServer = () => {
-        socket.emit("delete_input", { room } )
-    }
-
-    const sendSubmitToServer = () => {
-        socket.emit("submit_input", { room } )
-    }
-
-    const handleGameOver = (withWinner) => {
-        if (withWinner) {
-            setIsWinner(true);
-            socket.emit("game_over", { winner: username, room });
-        } else {
-            socket.emit("game_over", { winner: "none", room });
-        }
-        setIsGameOver(true);
+    const handleGameOver = (winner) => {
+        socket.emit("game_over", { winner, room })
     }
 
     return (
