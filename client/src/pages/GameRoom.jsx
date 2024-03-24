@@ -24,8 +24,6 @@ function GameRoom({ username, opponent, room, setOpponent, word, setWord, setRoo
 
     useEffect(() => {
 
-        // console.log("socket", socket.connected, socket);
-
         const handleNewOpponent = (data) => {
             // console.log("Data", data);
             setOpponent(data.username);
@@ -34,7 +32,6 @@ function GameRoom({ username, opponent, room, setOpponent, word, setWord, setRoo
         socket.on("new_opponent", handleNewOpponent);
 
         const handleCurrentPlayer = ({ user }) => {
-            // console.log("Turn", user);
             setCurrentPlayer(user.username);
             if (user.username === username) {
                 setIsPlayerTurn(prevIsPlayerTurn => true);

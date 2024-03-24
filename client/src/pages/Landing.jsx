@@ -26,7 +26,6 @@ function Landing({ username, setUsername, room, setRoom }) {
 
     const loadGame = (roomName) => {
         socket.connect();
-        // console.log("User", username, room);
         socket.emit("join_room", { username, room: roomName });
     }
 

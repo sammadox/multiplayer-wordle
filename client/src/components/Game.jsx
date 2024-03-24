@@ -16,8 +16,7 @@ function Game({room, isPlayerTurn, setIsPlayerTurn, setCurrentPlayer, opponent, 
     const [isGameOver, setIsGameOver] = useState(false);
     const [isWinner, setIsWinner] = useState(false);
     const [winner, setWinner] = useState("");
-    // console.log("The word is: ", word);
-
+    
     useEffect(() => {
 
         const handleLetterInputFromServer = ({ letter }) => {
@@ -35,14 +34,12 @@ function Game({room, isPlayerTurn, setIsPlayerTurn, setCurrentPlayer, opponent, 
         const handleSubmitFromServer = ({isValidWord}) => {
             if (isValidWord && currentWord.length === 5) {
                 submitGuess();
-                // console.log(`Word submitted: ${currentWord}`);
                 toggleCurrentPlayer();
                 setIsPlayerTurn(!isPlayerTurn);
             }
         }
 
         const handleGameOverFromServer = ({ winner }) => {
-            // console.log("Game over", winner);
             setIsGameOver(true);
             setWinner(winner);
             setIsWinner(winner === username);
@@ -64,11 +61,11 @@ function Game({room, isPlayerTurn, setIsPlayerTurn, setCurrentPlayer, opponent, 
 
     const getBackgroundColorClassName = (key) => {
         if (guessedExactLetters.includes(key)) {
-            return "word-letter-correct-place";
+            return "key-letter-correct-place";
         } else if (guessedNotExactLetters.includes(key)) {
-            return "word-letter-wrong-place";
+            return "key-letter-wrong-place";
         } else if (guessedWrongLetters.includes(key)) {
-            return "word-letter-not-present";
+            return "key-letter-not-present";
         }
         return "";
     }
@@ -93,7 +90,7 @@ function Game({room, isPlayerTurn, setIsPlayerTurn, setCurrentPlayer, opponent, 
         if (isPlayerTurn) {
             if (currentWord === word) {
                 handleGameOver(username);
-            } else if (currentRow === 4) {
+            } else if (currentRow === 5) {
                 handleGameOver("none");
             }
         }
@@ -104,34 +101,27 @@ function Game({room, isPlayerTurn, setIsPlayerTurn, setCurrentPlayer, opponent, 
 
     const handleLetterClick = (key) => {
         if (!isPlayerTurn) return;
-        // console.log("In Letter", isPlayerTurn, key, currentWord);
         socket.emit("letter_input", { letter: key, room } )
     }
 
     const handleDeleteClick = () => {
         if (!isPlayerTurn) return;
-        // console.log("In Delete", isPlayerTurn, currentWord);
         socket.emit("delete_input", { room } );
     }
 
     const handleEnterClick = () => {
         if (!isPlayerTurn) return;
-        // console.log('Here', currentWord, currentWord.length, isPlayerTurn);
         socket.emit("submit_input", { room, currentWord } )
     }
 
     const handleKeyUp = (e) => {
         e.preventDefault();
         if (!isPlayerTurn) return;
-        // console.log("Enter", e.key);
         if (e.code === `Key${e.key.toUpperCase()}`) {
-            // console.log("here", e.key.toUpperCase());
             handleLetterClick(e.key.toUpperCase(), false);
         } else if (e.key === 'Backspace') {
-            // console.log("delete");
             handleDeleteClick(false);
         } else if (e.key == 'Enter') {
-            // console.log("Enter", e);
             handleEnterClick(false);
         }
     }
@@ -142,13 +132,14 @@ function Game({room, isPlayerTurn, setIsPlayerTurn, setCurrentPlayer, opponent, 
 
     return (
         <div className="game-container">
-            <WordGuess word={word} guessList={guessList} currentRow={currentRow} currentWord={currentWord}
+            <WordGuess word={word} guessList={guessList}
+                currentRow={currentRow} currentWord={currentWord}
             />
             <Keyboard handleKeyUp={handleKeyUp} handleLetterClick={handleLetterClick} 
                     handleDeleteClick={handleDeleteClick} handleEnterClick={handleEnterClick}
                     getBackgroundColorClassName={getBackgroundColorClassName}
             />
-            { isGameOver ? <Delayed delay={1000}><Modal isWinner={isWinner} winner={winner} word={word}/></Delayed> : <></>}
+            { isGameOver ? <Delayed delay={4000}><Modal isWinner={isWinner} winner={winner} word={word}/></Delayed> : <></>}
         </div>
     )
 }

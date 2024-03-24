@@ -87,14 +87,26 @@ body {
 }
 
 .word-letter-correct-place{
-  background-color: hsl(120, 83%, 70%);
+  --background-color: hsl(120, 83%, 70%);
 }
 
 .word-letter-wrong-place{
-  background-color: hsl(63, 83%, 70%);
+  --background-color: hsl(63, 83%, 70%);
 }
 
 .word-letter-not-present{
+  --background-color: hsl(0, 0%, 50%);
+}
+
+.key-letter-correct-place{
+  background-color: hsl(120, 83%, 70%);
+}
+
+.key-letter-wrong-place{
+  background-color: hsl(63, 83%, 70%);
+}
+
+.key-letter-not-present{
   background-color: hsl(0, 0%, 50%);
 }
 
@@ -228,10 +240,57 @@ body {
   /* animation-iteration-count: infinite; */
 }
 
+.flipped{
+  animation: flip 0.8s ease forwards;
+}
+
+.final{
+  animation: flipAndBounce 1.6s ease forwards;
+}
+
 @keyframes bounce { 
   0%, 20%, 50%, 80%, 100% {transform: translateY(0);} 
   40% {transform: translateY(-0.5rem);} 
   60% {transform: translateY(-0.25rem);} 
+}
+
+@keyframes flip {
+  0%{
+    transform: rotateX(0);
+    background-color: hsl(0, 0%, 20%);
+  }
+  50%{
+    transform: rotateX(90deg);
+    background-color: hsl(0, 0%, 20%);
+  }
+  100%{
+    transform: rotateX(0);
+    background-color: var(--background-color);
+  }
+}
+
+@keyframes flipAndBounce {
+  0%{
+    transform: rotateX(0);
+    background-color: hsl(0, 0%, 20%);
+  }
+  25%{
+    transform: rotateX(90deg);
+    background-color: hsl(0, 0%, 20%);
+  }
+  45%{
+    transform: rotateX(0);
+    background-color: var(--background-color);
+  }
+  50%, 60%, 75%, 90%, 100% {
+    transform: translateY(0);
+    background-color: var(--background-color);
+  } 
+  70% {
+    transform: translateY(-0.5rem);
+    background-color: var(--background-color);
+  } 
+  80% {transform: translateY(-0.25rem);} 
 }
 
 .Toastify__toast-container {
