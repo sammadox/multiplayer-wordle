@@ -25,17 +25,17 @@ const corsOptions = process.env.MODE === 'DEV' ? {
     }
 } : {
     cors: {
-        origin: process.env.CLIENT_URL,
+        origin: ["https://multiplayer-wordle-client.vercel.app"],
         methods: ["POST", "GET"],
         credentials: true
     }
 };
-console.log("Cors options", corsOptions);
+
 const io = socketIo(server, corsOptions);
 
 const PORT = process.env.PORT || 3000;
 
-app.use(cors());
+app.use(cors(corsOptions.cors));
 
 //Body Parser middleware
 app.use(express.json());
