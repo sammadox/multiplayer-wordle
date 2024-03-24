@@ -4,6 +4,7 @@ import Keyboard from "./Keyboard";
 import { socket } from "../socket";
 import Modal from "./Modal";
 import Delayed from "./Delayed";
+import { toast } from "react-toastify";
 
 function Game({room, isPlayerTurn, setIsPlayerTurn, setCurrentPlayer, opponent, username, word, toggleCurrentPlayer}) {
 
@@ -36,6 +37,12 @@ function Game({room, isPlayerTurn, setIsPlayerTurn, setCurrentPlayer, opponent, 
                 submitGuess();
                 toggleCurrentPlayer();
                 setIsPlayerTurn(!isPlayerTurn);
+            }
+
+            if (!isValidWord && isPlayerTurn) {
+                toast.warning("Not a valid word!", {
+                    position: "top-center"
+                });
             }
         }
 
