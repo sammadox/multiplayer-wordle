@@ -30,6 +30,7 @@ const corsOptions = process.env.MODE === 'DEV' ? {
         credentials: true
     }
 };
+console.log("Cors options", corsOptions);
 const io = socketIo(server, corsOptions);
 
 const PORT = process.env.PORT || 3000;
