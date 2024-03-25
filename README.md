@@ -23,7 +23,7 @@ The frontend and backend communicate via Socket IO rooms and events.
 
 # How to play
 
-Use this [link] (multiplayer-wordle-game.onrender.com) to enter the game. Fill your username and click on Create Room.
+Use this [link](multiplayer-wordle-game.onrender.com) to enter the game. Fill your username and click on Create Room.
 
 Share the room code and the game link with your friend.
 
