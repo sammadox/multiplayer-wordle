@@ -25,7 +25,7 @@ const corsOptions = process.env.MODE === 'DEV' ? {
     }
 } : {
     cors: {
-        origin: ["https://multiplayer-wordle-client.vercel.app"],
+        origin: "*",
         methods: ["POST", "GET"],
         credentials: true
     }

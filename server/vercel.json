@@ -10,7 +10,7 @@
           "dest": "/",
           "methods": ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
           "headers": {
-            "Access-Control-Allow-Origin": "https://multiplayer-wordle-client.vercel.app"
+            "Access-Control-Allow-Origin": "*"
           }
         }
       ]
