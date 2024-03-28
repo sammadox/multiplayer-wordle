@@ -62,19 +62,21 @@ function GameRoom({ username, opponent, room, setOpponent, word, setWord, setRoo
     }, []);
 
     return (
-        <div className="game-room">
-            <GameDetails 
-                room={room} username={username}
-                opponent={opponent} currentPlayer={currentPlayer}
-            />
-            {opponent ? <Game room={room} 
-                isPlayerTurn={isPlayerTurn} 
-                setIsPlayerTurn={setIsPlayerTurn} 
-                setCurrentPlayer={setCurrentPlayer}
-                opponent={opponent} username={username} 
-                word={word} toggleCurrentPlayer={toggleCurrentPlayer}
-                /> 
-                : <WaitForOpponent />}
+        <div className="game-room-container">
+            <div className="game-room">
+                <GameDetails
+                    room={room} username={username}
+                    opponent={opponent} currentPlayer={currentPlayer}
+                />
+                {opponent ? <Game room={room}
+                    isPlayerTurn={isPlayerTurn}
+                    setIsPlayerTurn={setIsPlayerTurn}
+                    setCurrentPlayer={setCurrentPlayer}
+                    opponent={opponent} username={username}
+                    word={word} toggleCurrentPlayer={toggleCurrentPlayer}
+                />
+                    : <WaitForOpponent />}
+            </div>
         </div>
     )
 }

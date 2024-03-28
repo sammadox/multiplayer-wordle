@@ -167,25 +167,50 @@ body {
   border: none;
   color: black;
   font-size: 1.1rem;
+  background-color: hsl(0, 0%, 85%);
 }
 
-#create-btn{
-  margin-bottom: 30px;
+.button-group, .join-room-group{
+  display: flex;
+  height: 50px;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px;
+  overflow: hidden;
 }
 
-.landing-container > button{
+.button-group{
+  width: 250px;
+}
+
+.join-room-group{
+  width: 230px;
+}
+
+.join-room-group > input{
+  border-radius: 5px;
+  padding: 5px;
+  width: 150px;
+  border: none;
+  color: black;
+  font-size: 1rem;
+  background-color: hsl(0, 0%, 85%);
+}
+
+.btn{
   border: none;
   padding: 8px 16px;
   border-radius: 10px;
   background-color: hsl(120, 55%, 50%);
+  color: white;
 }
 
-.landing-container > button:hover{
+.btn:hover{
   background-color: hsl(120, 55%, 40%);
   cursor: pointer;
 }
 
-.landing-container > button:disabled{
+.btn:disabled{
   opacity: 0.6;
   cursor: not-allowed;
 }
@@ -245,7 +270,7 @@ body {
 }
 
 .final{
-  animation: flipAndBounce 1.6s ease forwards;
+  animation: flipAndBounce 1.8s ease forwards;
 }
 
 @keyframes bounce { 
@@ -291,6 +316,46 @@ body {
     background-color: var(--background-color);
   } 
   80% {transform: translateY(-0.25rem);} 
+}
+
+@keyframes appear {
+  from{
+    scale: 0 0;
+  }
+  to{
+    scale: 1 1;
+  }
+}
+
+@keyframes vanish {
+  from{
+    scale: 1 1;
+  }
+  to{
+    scale: 0 0;
+  }
+}
+
+@keyframes fadeoutright {
+  from{
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to{
+    opacity: 0;
+    transform: translateX(100px);
+  }
+}
+
+@keyframes fadeinleft {
+  from{
+    opacity: 0;
+    transform: translateX(-100px);
+  }
+  to{
+    opacity: 1;
+    transform: translateX(0px);
+  }
 }
 
 .Toastify__toast-container {
