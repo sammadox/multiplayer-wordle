@@ -5,17 +5,17 @@ It is a superfun game to play and it jogs your brain and test your own vocabular
 
 Having been a big fan of the game, I wanted to create a web based game where you could battle against your friend taking turns to guess the word.
 
-# Frontend
+## Frontend
 
 The front end is made in React.
 
 
-# Backend
+## Backend
 
 The backend server is made using Node and Express.
 
 
-# Communication
+## Communication
 
 The frontend and backend communicate via Socket IO rooms and events.
 
