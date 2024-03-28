@@ -146,7 +146,7 @@ function Game({room, isPlayerTurn, setIsPlayerTurn, setCurrentPlayer, opponent, 
                     handleDeleteClick={handleDeleteClick} handleEnterClick={handleEnterClick}
                     getBackgroundColorClassName={getBackgroundColorClassName}
             />
-            { isGameOver ? <Delayed delay={4000}><Modal isWinner={isWinner} winner={winner} word={word}/></Delayed> : <></>}
+            { isGameOver ? <Delayed delay={3000}><Modal isWinner={isWinner} winner={winner} word={word}/></Delayed> : <></>}
         </div>
     )
 }
