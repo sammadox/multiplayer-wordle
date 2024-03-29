@@ -13,14 +13,14 @@ const getRoomName = () => {
     return roomName;
 }
 
-const appearAnimation = { animation: "appear 0.8s ease-in forwards" };
-const vanishAnimation = { animation: "vanish 0.8s ease-out forwards" };
+const appearAnimation = { animation: "appear 0.5s ease-in forwards" };
+const vanishAnimation = { animation: "vanish 0.5s ease-out forwards" };
 
 function Landing({ username, setUsername, room, setRoom }) {
 
     const [joiningRoom, setJoiningRoom] = useState('');
     const [isMounted, setIsMounted] = useState(true);
-    const showButtons = useDelayUnmount(isMounted, 800);
+    const showButtons = useDelayUnmount(isMounted, 500);
 
     const handleUserInputChange = (event) => {
         setUsername(prevUser => prevUser = event.target.value);

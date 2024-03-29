@@ -270,7 +270,7 @@ body {
 }
 
 .final{
-  animation: flipAndBounce 1.8s ease forwards;
+  animation: flipAndBounce 2s ease forwards;
 }
 
 @keyframes bounce { 
@@ -303,7 +303,7 @@ body {
     transform: rotateX(90deg);
     background-color: hsl(0, 0%, 20%);
   }
-  45%{
+  49%{
     transform: rotateX(0);
     background-color: var(--background-color);
   }

@@ -4,6 +4,7 @@ import GameRoom from "./pages/GameRoom"
 import { socket } from "./socket";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { AppContextProvider } from "./hooks/useAppContext";
 
 function App() {
 
@@ -33,6 +34,7 @@ function App() {
 
   return (
     <>
+      <AppContextProvider>
       {
         (username && room)
         ? <GameRoom username={username} opponent={opponent} 
@@ -43,6 +45,7 @@ function App() {
                  room={room} setRoom={setRoom}
           />
       }
+      </AppContextProvider>
       <ToastContainer />
     </>
   )

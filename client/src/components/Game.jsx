@@ -1,34 +1,44 @@
 import { useEffect, useState } from "react";
-import WordGuess from "./WordGuess";
+import WordGrid from "./WordGrid";
 import Keyboard from "./Keyboard";
 import { socket } from "../socket";
 import Modal from "./Modal";
 import Delayed from "./Delayed";
 import { toast } from "react-toastify";
+import { useAppContext } from "../hooks/useAppContext";
 
 function Game({room, isPlayerTurn, setIsPlayerTurn, setCurrentPlayer, opponent, username, word, toggleCurrentPlayer}) {
 
     const [currentWord, setCurrentWord] = useState("");
     const [currentRow, setCurrentRow] = useState(0);
-    const [guessList, setGuessList] = useState([]);
     const [guessedExactLetters, setGuessedExactLetters] = useState([]);
     const [guessedNotExactLetters, setGuessedNotExactLetters] = useState([]);
     const [guessedWrongLetters, setGuessedWrongLetters] = useState([]);
     const [isGameOver, setIsGameOver] = useState(false);
     const [isWinner, setIsWinner] = useState(false);
     const [winner, setWinner] = useState("");
+    const {wordGrid, setWordGrid} = useAppContext();
     
     useEffect(() => {
 
         const handleLetterInputFromServer = ({ letter }) => {
             if (currentWord.length < 5) {
+                let position = currentWord.length;
                 setCurrentWord(prevCurrentWord => prevCurrentWord + letter);
+                const newGrid = [...wordGrid];
+                newGrid[currentRow][position] = letter;
+                setWordGrid(newGrid);
             }
         }
 
         const handleDeleteFromServer = () => {
             if (currentWord.length > 0) {
+                let position = currentWord.length;
                 setCurrentWord(prevCurrentWord => prevCurrentWord.slice(0,-1));
+                const newGrid = [...wordGrid];
+                newGrid[currentRow][position-1] = '';
+                console.log("After delete", newGrid, position);
+                setWordGrid(newGrid);
             }
         }
 
@@ -64,7 +74,7 @@ function Game({room, isPlayerTurn, setIsPlayerTurn, setCurrentPlayer, opponent, 
             socket.off("game_over", handleGameOverFromServer);
         }
 
-    }, [currentWord]);
+    }, [wordGrid, currentWord, currentRow]);
 
     const getBackgroundColorClassName = (key) => {
         if (guessedExactLetters.includes(key)) {
@@ -101,7 +111,6 @@ function Game({room, isPlayerTurn, setIsPlayerTurn, setCurrentPlayer, opponent, 
                 handleGameOver("none");
             }
         }
-        setGuessList(prevGuestList => [...prevGuestList, currentWord]);
         setCurrentRow(prevCurrentRow => prevCurrentRow + 1);
         setCurrentWord("");
     }
@@ -118,6 +127,7 @@ function Game({room, isPlayerTurn, setIsPlayerTurn, setCurrentPlayer, opponent, 
 
     const handleEnterClick = () => {
         if (!isPlayerTurn) return;
+        if (currentWord.length < 5) return;
         socket.emit("submit_input", { room, currentWord } )
     }
 
@@ -139,14 +149,16 @@ function Game({room, isPlayerTurn, setIsPlayerTurn, setCurrentPlayer, opponent, 
 
     return (
         <div className="game-container">
-            <WordGuess word={word} guessList={guessList}
-                currentRow={currentRow} currentWord={currentWord}
+            <WordGrid word={word}
+                currentRow={currentRow}
             />
             <Keyboard handleKeyUp={handleKeyUp} handleLetterClick={handleLetterClick} 
                     handleDeleteClick={handleDeleteClick} handleEnterClick={handleEnterClick}
                     getBackgroundColorClassName={getBackgroundColorClassName}
             />
-            { isGameOver ? <Delayed delay={3000}><Modal isWinner={isWinner} winner={winner} word={word}/></Delayed> : <></>}
+            { isGameOver ? <Delayed delay={3000}>
+                <Modal isWinner={isWinner} winner={winner} word={word}/>
+            </Delayed> : <></>}
         </div>
     )
 }
