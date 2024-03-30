@@ -234,7 +234,7 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: hsla(0, 0%, 0%, 0.85);
+  background-color: hsla(0, 0%, 0%, 0.25);
   display: grid;
   place-items: center;
 }
@@ -263,6 +263,39 @@ body {
   animation-name: bounce;
   animation-duration: 1.5s;
   /* animation-iteration-count: infinite; */
+}
+
+.play-again{
+  margin-top: 10px;
+}
+
+.play-again button{
+  border: none;
+  padding: 8px 16px;
+  border-radius: 10px;
+  background-color: hsl(120, 55%, 50%);
+  color: white;
+}
+
+.play-again button:hover{
+  background-color: hsl(120, 55%, 40%);
+  cursor: pointer;
+}
+
+#tooltip{
+  opacity: 0;
+  position: absolute;
+  border: 1px solid grey;
+  background-color: hsl(0, 0%, 40%);
+  color: white;
+  top: 0;
+  left: 0;
+  border-radius: 5px;
+  padding: 5px;
+}
+
+.play-again button:hover #tooltip{
+  opacity: 1;
 }
 
 .flipped{

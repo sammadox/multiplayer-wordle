@@ -1,56 +1,22 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import Game from "../components/Game";
 import WaitForOpponent from "../components/WaitForOpponent";
 import { socket } from "../socket";
 import GameDetails from "../components/GameDetails";
-import { toast } from 'react-toastify';
+import { useAppContext } from "../hooks/useAppContext";
 
-function GameRoom({ username, opponent, room, setOpponent, word, setWord, setRoom }) {
+function GameRoom() {
 
-    const [currentPlayer, setCurrentPlayer] = useState();
-    const [isPlayerTurn, setIsPlayerTurn] = useState(false);
-
-    const toastOptions = {
-        position: "bottom-center"
-    };
-
-    const toggleCurrentPlayer = () => {
-        if (currentPlayer === username) {
-            setCurrentPlayer(opponent);
-        } else {
-            setCurrentPlayer(username);
-        }
-    }
+    const {
+        opponent, handleNewOpponent, handleCurrentPlayer,
+        handleGameWord, handleRoomFull
+    } = useAppContext();
 
     useEffect(() => {
 
-        const handleNewOpponent = (data) => {
-            // console.log("Data", data);
-            setOpponent(data.username);
-        }
-
         socket.on("new_opponent", handleNewOpponent);
-
-        const handleCurrentPlayer = ({ user }) => {
-            setCurrentPlayer(user.username);
-            if (user.username === username) {
-                setIsPlayerTurn(prevIsPlayerTurn => true);
-            }
-        }
-
         socket.on("first_player", handleCurrentPlayer);
-
-        const handleGameWord = ({ word }) => {
-            setWord(word);
-        }
-
         socket.on("room_word", handleGameWord);
-
-        const handleRoomFull = () => {
-            toast.error("Room full! Try another or create one!", toastOptions);
-            setRoom("");
-        }
-
         socket.on('room_full', handleRoomFull);
 
         return () => {
@@ -59,23 +25,16 @@ function GameRoom({ username, opponent, room, setOpponent, word, setWord, setRoo
             socket.off("room_word", handleGameWord);
             socket.off('room_full', handleRoomFull);
         }
+        
     }, []);
 
     return (
         <div className="game-room-container">
             <div className="game-room">
-                <GameDetails
-                    room={room} username={username}
-                    opponent={opponent} currentPlayer={currentPlayer}
-                />
-                {opponent ? <Game room={room}
-                    isPlayerTurn={isPlayerTurn}
-                    setIsPlayerTurn={setIsPlayerTurn}
-                    setCurrentPlayer={setCurrentPlayer}
-                    opponent={opponent} username={username}
-                    word={word} toggleCurrentPlayer={toggleCurrentPlayer}
-                />
-                    : <WaitForOpponent />}
+                <GameDetails />
+                {
+                    opponent ? <Game /> : <WaitForOpponent />
+                }
             </div>
         </div>
     )

@@ -4,15 +4,14 @@ import GameRoom from "./pages/GameRoom"
 import { socket } from "./socket";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { AppContextProvider } from "./hooks/useAppContext";
+import { useAppContext } from "./hooks/useAppContext";
+import Modal from "./components/Modal";
+import Delayed from "./components/Delayed";
 
 function App() {
 
-  const [room, setRoom] = useState("");
-  const [username, setUsername] = useState("");
-  const [opponent, setOpponent] = useState("");
   const [isConnected, setIsConnected] = useState(socket.connected);
-  const [word, setWord] = useState("");
+  const {username, room, isGameOver} = useAppContext();
 
   useEffect(() => {
     function onConnect() {
@@ -34,18 +33,14 @@ function App() {
 
   return (
     <>
-      <AppContextProvider>
       {
         (username && room)
-        ? <GameRoom username={username} opponent={opponent} 
-                  room={room} setOpponent={setOpponent} 
-                  word={word} setWord={setWord} setRoom={setRoom}
-          /> 
-        : <Landing username={username} setUsername={setUsername}
-                 room={room} setRoom={setRoom}
-          />
+        ? <GameRoom /> 
+        : <Landing />
       }
-      </AppContextProvider>
+      { 
+        isGameOver ? <Delayed delay={3000}> <Modal /> </Delayed> : <></>
+      }
       <ToastContainer />
     </>
   )

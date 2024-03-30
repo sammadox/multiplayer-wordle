@@ -1,4 +1,8 @@
-function GameDetails({ room, username, opponent, currentPlayer }) {
+import { useAppContext } from "../hooks/useAppContext";
+
+function GameDetails() {
+
+    const { room, username, opponent, currentPlayer } = useAppContext();
 
     return (
         <div className="game-details-card">
