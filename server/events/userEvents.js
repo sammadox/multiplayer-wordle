@@ -35,14 +35,22 @@ const roomJoinHandler = (socket, io) => {
   });
 };
 
+const leaveRoomHandler = (socket, io) => {
+    socket.on("leave_room", ({room}) => {
+        socket.leave(room);
+        let removedUser = removeUser(socket.id);
+        console.log("user leaving room:", removedUser);
+    })
+}
+
 const userDisconnectedHandler = (socket) => {
     socket.on("disconnect", () => {
-        let removedUser = removeUser(socket.id);
-        console.log("user left:", removedUser);
+        console.log("user left:", socket.id);
     });
 }
 
 module.exports = {
   roomJoinHandler,
+  leaveRoomHandler,
   userDisconnectedHandler
 };

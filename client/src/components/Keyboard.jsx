@@ -1,6 +1,13 @@
 import { useEffect } from "react";
+import { useAppContext } from "../hooks/useAppContext";
 
-function Keyboard({handleKeyUp, handleLetterClick, handleDeleteClick, handleEnterClick, getBackgroundColorClassName}) {
+function Keyboard() {
+
+    const {
+        getBackgroundColorClassName,
+        handleKeyUp, handleLetterClick,
+        handleDeleteClick, handleEnterClick
+    } = useAppContext();
 
     const keyRow1 = ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'];
     const keyRow2 = ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'];
@@ -20,14 +27,22 @@ function Keyboard({handleKeyUp, handleLetterClick, handleDeleteClick, handleEnte
                 <div className="keyboard-row">
                     {
                         keyRow1.map((key) => {
-                            return <button className={getBackgroundColorClassName(key)} key={`btn-${key}`} onClick={() => handleLetterClick(key)}>{key}</button>
+                            return <button className={getBackgroundColorClassName(key)} 
+                                key={`btn-${key}`} onClick={() => handleLetterClick(key)}
+                            >
+                                {key}
+                            </button>
                         })
                     }
                 </div>
                 <div className="keyboard-row">
                     {
                         keyRow2.map((key) => {
-                            return <button className={getBackgroundColorClassName(key)} key={`btn-${key}`} onClick={() => handleLetterClick(key)}>{key}</button>
+                            return <button className={getBackgroundColorClassName(key)} 
+                                key={`btn-${key}`} onClick={() => handleLetterClick(key)}
+                            >
+                                {key}
+                            </button>
                         })
                     }
                 </div>
@@ -35,7 +50,11 @@ function Keyboard({handleKeyUp, handleLetterClick, handleDeleteClick, handleEnte
                     <button onClick={handleDeleteClick}>Delete</button>
                     {
                         keyRow3.map((key) => {
-                            return <button className={getBackgroundColorClassName(key)} key={`btn-${key}`} onClick={() => handleLetterClick(key)}>{key}</button>
+                            return <button className={getBackgroundColorClassName(key)} 
+                                key={`btn-${key}`} onClick={() => handleLetterClick(key)}
+                            >
+                                {key}
+                            </button>
                         })
                     }
                     <button onClick={handleEnterClick}>Enter</button>

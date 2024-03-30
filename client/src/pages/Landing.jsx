@@ -1,22 +1,17 @@
 import { useState } from "react";
-import { socket } from "../socket";
 import Footer from "../components/Footer";
 import useDelayUnmount from "../hooks/useDelayUnmount";
-
-const getRoomName = () => {
-    const generatorString = "abcdefghijklmnopqrstuvwxyz";
-    let roomName = "";
-    for (let i = 0; i < 6; i++) {
-        let randomIndex = Math.floor(Math.random() * generatorString.length);
-        roomName += generatorString.charAt(randomIndex);
-    }
-    return roomName;
-}
+import { useAppContext } from "../hooks/useAppContext";
 
 const appearAnimation = { animation: "appear 0.5s ease-in forwards" };
 const vanishAnimation = { animation: "vanish 0.5s ease-out forwards" };
 
-function Landing({ username, setUsername, room, setRoom }) {
+function Landing() {
+
+    const {
+        setRoom, username, setUsername,
+        getRoomName, startGame
+    } = useAppContext();
 
     const [joiningRoom, setJoiningRoom] = useState('');
     const [isMounted, setIsMounted] = useState(true);
@@ -30,20 +25,15 @@ function Landing({ username, setUsername, room, setRoom }) {
         setJoiningRoom(event.target.value);
     }
 
-    const loadGame = (roomName) => {
-        socket.connect();
-        socket.emit("join_room", { username, room: roomName });
-    }
-
     const handleCreateRoom = () => {
         const roomName = getRoomName();
         setRoom(roomName);
-        loadGame(roomName);
+        startGame(roomName);
     }
 
     const handleJoinRoom = () => {
         setRoom(joiningRoom);
-        loadGame(joiningRoom);
+        startGame(joiningRoom);
     }
 
     const handleLandingJoin = () => {

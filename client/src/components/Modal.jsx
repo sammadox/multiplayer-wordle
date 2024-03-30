@@ -1,13 +1,23 @@
-import { useEffect } from "react";
+import { useState } from "react";
+import { MdReplay } from "react-icons/md";
+import { useAppContext } from "../hooks/useAppContext";
 
+function Modal() {
+    
+    const [style, setStyle] = useState({});
 
+    const {isWinner, winner, word, handlePlayAgain} = useAppContext();
 
-function Modal({isWinner, winner, word}) {
-    useEffect(() => {
-        const timer = setTimeout(() => {}, 2000);
+    const handleOnMouseMove = (e) => {
+        let x = e.clientX;
+        let y = e.clientY;
+        const newStyle = {
+            left: `${x+15}px`,
+            top: `${y}px`
+        }
+        setStyle(newStyle);
+    }
 
-        return () => clearTimeout(timer);
-    }, []);
     return (
         <div className="modal-overlay">
             <div className="modal-container">
@@ -19,6 +29,12 @@ function Modal({isWinner, winner, word}) {
                             return <span key={index} style={style} >{wordCharacter}</span>
                         })}
                     </span>
+                </div>
+                <div className="play-again">
+                    <button onMouseMove={handleOnMouseMove} onClick={handlePlayAgain}>
+                        <MdReplay/>
+                        <div id="tooltip" style={style}>Play again!</div>
+                    </button>
                 </div>
             </div>
         </div>

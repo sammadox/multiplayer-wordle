@@ -13,6 +13,7 @@ const {
 
 const {
     roomJoinHandler,
+    leaveRoomHandler,
     userDisconnectedHandler
 } = require('./events/userEvents');
 
@@ -49,6 +50,9 @@ io.on("connection", (socket) => {
 
     // On join room
     roomJoinHandler(socket, io);
+
+    // On leaving room
+    leaveRoomHandler(socket,io);
 
     // On receiving a letter from game
     letterReceiveHandler(io, socket);

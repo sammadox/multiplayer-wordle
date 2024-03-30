@@ -1,8 +1,9 @@
 import { useAppContext } from "../hooks/useAppContext";
 
-function WordGridRow({row, word, currentRow}) {
+function WordGridRow({row}) {
 
-    const {wordGrid} = useAppContext();
+    const {wordGrid, word, currentRow} = useAppContext();
+
     let bgClass = new Array(5).fill("");
     if (row < currentRow && word) {
         let remaining = word;
