@@ -36,6 +36,10 @@ function Modal() {
                         <div id="tooltip" style={style}>Play again!</div>
                     </button>
                 </div>
+                <div className="tooltipbox">
+                    <div className="triangle"></div>
+                    <div className="box">Play Again</div>
+                </div>
             </div>
         </div>
     );
