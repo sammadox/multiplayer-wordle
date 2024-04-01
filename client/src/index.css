@@ -87,6 +87,7 @@ body {
   justify-content: center;
   font-family: roboto;
   font-size: 1.3rem;
+  padding: 0;
 }
 
 .floating-button:hover{
