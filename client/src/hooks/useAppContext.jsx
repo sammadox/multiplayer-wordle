@@ -29,6 +29,7 @@ export const AppContextProvider = ({children}) => {
     const [username, setUsername] = useState("");
     const [opponent, setOpponent] = useState("");
     const [word, setWord] = useState("");
+    const [showRules, setShowRules] = useState(false);
 
     const [currentPlayer, setCurrentPlayer] = useState("");
     const [isPlayerTurn, setIsPlayerTurn] = useState(false);
@@ -42,6 +43,10 @@ export const AppContextProvider = ({children}) => {
     const [isWinner, setIsWinner] = useState(false);
     const [winner, setWinner] = useState("");
     
+    const handleShowRules = () => {
+        setShowRules(prevShowRules => !prevShowRules);
+    }
+
     const startGame = (roomName) => {
         socket.connect();
         socket.emit("join_room", { username, room: roomName });
@@ -217,6 +222,7 @@ export const AppContextProvider = ({children}) => {
                 username, setUsername,
                 opponent, setOpponent,
                 word, setWord,
+                showRules, setShowRules, handleShowRules,
                 currentPlayer, setCurrentPlayer,
                 isPlayerTurn, setIsPlayerTurn,
                 currentWord, setCurrentWord,
