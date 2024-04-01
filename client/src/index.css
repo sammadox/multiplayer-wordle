@@ -18,13 +18,14 @@ body {
   width: 70%;
   max-width: 400px;
   background: hsl(0, 0%, 20%);
-  height: 60%;
+  height: 80%;
   border-radius: 20px;
   color: white;
   display: flex;
   flex-direction: column;
   padding: 20px;
   position: relative;
+  overflow: scroll;
 }
 
 .rules-main p{
@@ -75,7 +76,7 @@ body {
   position: fixed;
   height: 30px;
   width: 30px;
-  border-radius: 30px;
+  border-radius: 15px;
   background-color: transparent;
   border: 2px solid white;
   color: white;
