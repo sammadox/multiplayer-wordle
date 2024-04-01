@@ -7,11 +7,13 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useAppContext } from "./hooks/useAppContext";
 import Modal from "./components/Modal";
 import Delayed from "./components/Delayed";
+import FloatingButton from "./components/FloatingButton";
+import RulesInfo from "./components/RulesInfo";
 
 function App() {
 
   const [isConnected, setIsConnected] = useState(socket.connected);
-  const {username, room, isGameOver} = useAppContext();
+  const {username, room, isGameOver, showRules} = useAppContext();
 
   useEffect(() => {
     function onConnect() {
@@ -40,6 +42,10 @@ function App() {
       }
       { 
         isGameOver ? <Delayed delay={3000}> <Modal /> </Delayed> : <></>
+      }
+      <FloatingButton />
+      {
+        showRules ? <RulesInfo /> : <></>
       }
       <ToastContainer />
     </>
