@@ -8,7 +8,8 @@ const {
     letterReceiveHandler,
     deleteReceiveHandler,
     submitReceiveHandler,
-    gameOverHandler
+    gameOverHandler,
+    textReceiveHandler
 } = require('./events/gameEvents');
 
 const {
@@ -62,6 +63,9 @@ io.on("connection", (socket) => {
     submitReceiveHandler(io, socket);
     // On game over
     gameOverHandler(io, socket);
+
+    // On chat receive
+    textReceiveHandler(io, socket);
 
     //On disconnecting
     userDisconnectedHandler(socket);

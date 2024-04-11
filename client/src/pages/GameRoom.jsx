@@ -4,12 +4,14 @@ import WaitForOpponent from "../components/WaitForOpponent";
 import { socket } from "../socket";
 import GameDetails from "../components/GameDetails";
 import { useAppContext } from "../hooks/useAppContext";
+import ChatButton from "../components/ChatButton";
+import ChatWindow from "../components/ChatWindow";
 
 function GameRoom() {
 
     const {
         opponent, handleNewOpponent, handleCurrentPlayer,
-        handleGameWord, handleRoomFull
+        handleGameWord, handleRoomFull, showChat
     } = useAppContext();
 
     useEffect(() => {
@@ -36,6 +38,9 @@ function GameRoom() {
                     opponent ? <Game /> : <WaitForOpponent />
                 }
             </div>
+            {
+                showChat ? <ChatWindow /> : <ChatButton />
+            }
         </div>
     )
 }

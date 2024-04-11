@@ -25,9 +25,16 @@ const gameOverHandler = (io, socket) => {
     });
 }
 
+const textReceiveHandler = (io, socket) => {
+    socket.on("send_message", ({ room, username, message }) => {
+        io.to(room).emit("receive_message", { username, message });
+    });
+}
+
 module.exports = {
     letterReceiveHandler,
     deleteReceiveHandler,
     submitReceiveHandler,
-    gameOverHandler
+    gameOverHandler,
+    textReceiveHandler
 }
