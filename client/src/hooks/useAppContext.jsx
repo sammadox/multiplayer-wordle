@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState, useRef } from "react";
 import { socket } from "../socket";
 import { toast } from "react-toastify";
 
@@ -30,6 +30,10 @@ export const AppContextProvider = ({children}) => {
     const [opponent, setOpponent] = useState("");
     const [word, setWord] = useState("");
     const [showRules, setShowRules] = useState(false);
+    const [showChat, setShowChat] = useState(false);
+    const [messages, setMessages] = useState([]);
+    const chatInputRef = useRef(null);
+    const [newMessageReceived, setNewMessageReceived] = useState(false);
 
     const [currentPlayer, setCurrentPlayer] = useState("");
     const [isPlayerTurn, setIsPlayerTurn] = useState(false);
@@ -80,17 +84,24 @@ export const AppContextProvider = ({children}) => {
         return "";
     }
 
+    const isChatInputActive = () => {
+        return chatInputRef && document.activeElement === chatInputRef.current;
+    }
+
     const handleLetterClick = (key) => {
+        if (isChatInputActive()) return;
         if (!isPlayerTurn) return;
         socket.emit("letter_input", { letter: key, room } )
     }
 
     const handleDeleteClick = () => {
+        if (isChatInputActive()) return;
         if (!isPlayerTurn) return;
         socket.emit("delete_input", { room } );
     }
 
     const handleEnterClick = () => {
+        if (isChatInputActive()) return;
         if (!isPlayerTurn) return;
         if (currentWord.length < 5) return;
         socket.emit("submit_input", { room, currentWord } )
@@ -213,6 +224,12 @@ export const AppContextProvider = ({children}) => {
         setRoom("");
     }
 
+    const handleReceiveMessage = ({username: messageUser, message}) => {
+        const isMyText = (messageUser === username);
+        setMessages(prevMessages => [...prevMessages, { isMyText, text: message}]);
+        setNewMessageReceived(true);
+    }
+
     return <AppContext.Provider value={
             {
                 getRoomName, startGame,
@@ -223,6 +240,8 @@ export const AppContextProvider = ({children}) => {
                 opponent, setOpponent,
                 word, setWord,
                 showRules, setShowRules, handleShowRules,
+                showChat, setShowChat, messages, setMessages, handleReceiveMessage,
+                chatInputRef, newMessageReceived, setNewMessageReceived,
                 currentPlayer, setCurrentPlayer,
                 isPlayerTurn, setIsPlayerTurn,
                 currentWord, setCurrentWord,

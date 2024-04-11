@@ -9,7 +9,7 @@ function Game() {
     const {
         wordGrid, currentWord, currentRow,
         handleLetterInputFromServer, handleDeleteFromServer,
-        handleSubmitFromServer, handleGameOverFromServer
+        handleSubmitFromServer, handleGameOverFromServer, handleReceiveMessage
     } = useAppContext();
     
     useEffect(() => {
@@ -18,12 +18,14 @@ function Game() {
         socket.on("delete_input", handleDeleteFromServer);
         socket.on("submit_input", handleSubmitFromServer);
         socket.on("game_over", handleGameOverFromServer);
+        socket.on("receive_message", handleReceiveMessage);
 
         return () => {
             socket.off("letter_input", handleLetterInputFromServer);
             socket.off("delete_input", handleDeleteFromServer);
             socket.off("submit_input", handleSubmitFromServer);
             socket.off("game_over", handleGameOverFromServer);
+            socket.off("receive_message", handleReceiveMessage);
         }
 
     }, [wordGrid, currentWord, currentRow]);
