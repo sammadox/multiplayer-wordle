@@ -18,7 +18,7 @@ function Landing() {
     const showButtons = useDelayUnmount(isMounted, 500);
 
     const handleUserInputChange = (event) => {
-        setUsername(prevUser => prevUser = event.target.value);
+        setUsername(event.target.value);
     }
 
     const handleRoomInputChange = (event) => {

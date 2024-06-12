@@ -7,18 +7,18 @@ function RulesInfo() {
     const modalRef = useRef();
     const overlayRef = useRef();
 
-    const handleDialogClick = (e) => {
-        if ((e.target === overlayRef.current || overlayRef.current.contains(e.target)) &&
-            (e.target !== modalRef.current && !modalRef.current.contains(e.target))) {
-            handleShowRules();
-        }
-    }
-
     useEffect(() => {
+        const handleDialogClick = (e) => {
+            if ((e.target === overlayRef.current || overlayRef.current.contains(e.target)) &&
+                (e.target !== modalRef.current && !modalRef.current.contains(e.target))) {
+                handleShowRules();
+            }
+        }
+
         document.addEventListener("click", handleDialogClick);
 
         return () => document.removeEventListener("click", handleDialogClick);
-    }, [handleDialogClick]);
+    }, [handleShowRules]);
 
     return (
         <div className="rules-overlay" ref={overlayRef}>

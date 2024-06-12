@@ -6,6 +6,7 @@ import GameDetails from "../components/GameDetails";
 import { useAppContext } from "../hooks/useAppContext";
 import ChatButton from "../components/ChatButton";
 import ChatWindow from "../components/ChatWindow";
+import BootingUp from "../components/BootingUp";
 
 function GameRoom() {
 
@@ -28,19 +29,24 @@ function GameRoom() {
             socket.off('room_full', handleRoomFull);
         }
         
-    }, []);
+    }, [handleCurrentPlayer, handleNewOpponent, handleGameWord, handleRoomFull]);
 
     return (
         <div className="game-room-container">
-            <div className="game-room">
-                <GameDetails />
-                {
-                    opponent ? <Game /> : <WaitForOpponent />
-                }
-            </div>
-            {
-                showChat ? <ChatWindow /> : <ChatButton />
+            { socket.connected ? 
+                (<>
+                    <div className="game-room">
+                        <GameDetails />
+                        {
+                            opponent ? <Game /> : <WaitForOpponent />
+                        }
+                    </div>
+                    {
+                        showChat ? <ChatWindow /> : <ChatButton />
+                    }
+                </>) : <BootingUp />
             }
+            
         </div>
     )
 }
