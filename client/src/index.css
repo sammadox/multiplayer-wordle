@@ -25,6 +25,56 @@ body {
   font-size: 1.75em;
 }
 
+.animation-loader{
+  width: fit-content;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.animation-loader div{
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+  transform: scale(0);
+  animation: animate 1s ease-in-out infinite;
+  margin: 10px;
+  background-color: whitesmoke;
+}
+
+.animation-loader div:nth-child(0) {
+  animation-delay: 0s;
+}
+
+.animation-loader div:nth-child(1) {
+  animation-delay: 0.2s;
+}
+
+.animation-loader div:nth-child(2) {
+  animation-delay: 0.4s;
+}
+
+.animation-loader div:nth-child(3) {
+  animation-delay: 0.6s;
+}
+
+.animation-loader div:nth-child(4) {
+  animation-delay: 0.8s;
+}
+
+@keyframes animate {
+  0%,100%{
+    transform: scale(0.1);
+  }
+  40%{
+    transform: scale(1);
+  }
+  50%{
+    transform: scale(1);
+  }
+}
+
 /* Rules info */
 .rules-overlay{
   position: fixed;

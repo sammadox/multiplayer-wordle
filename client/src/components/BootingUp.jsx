@@ -1,6 +1,9 @@
+import LoadingAnimation from "./LoadingAnimation"
+
 const BootingUp = () => {
     return <div className="server-boot-wait">
         <p>Booting up the server...</p>
+        <LoadingAnimation />
         <ul>
             <li>{`Currently, I'm hosting the server on the free tier of Render.`}</li>
             <li>This makes the instance spin down with inactivity.</li>
