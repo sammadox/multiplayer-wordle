@@ -27,7 +27,7 @@ const corsOptions = process.env.MODE === 'DEV' ? {
     }
 } : {
     cors: {
-        origin: "*",
+        origin: process.env.VITE_WORDLEBATTLE_CLIENT,
         methods: ["POST", "GET"],
         credentials: true
     }
