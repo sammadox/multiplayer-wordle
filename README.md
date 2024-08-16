@@ -1,4 +1,4 @@
-# Multiplayer Wordle
+# Multiplayer Wordle for Suavex
 
 It is safe to assume most of us have been exposed to the viral game Wordle where people take attempts at guessing the word where feedback is given for each attempt showing which letters of the attempted guess are present/not present in the word to be guessed.
 It is a superfun game to play and it jogs your brain and test your own vocabulary(scrabble skills maybe).
